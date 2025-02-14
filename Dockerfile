@@ -7,6 +7,7 @@ WORKDIR /workdir
 RUN apk add --no-cache \
         ca-certificates-bundle \
         catatonit \
+        tzdata \
     && mkdir -p app/bin \
     && wget -qO- "https://github.com/autobrr/autobrr/releases/download/${VERSION}/autobrr_${VERSION#v}_linux_x86_64.tar.gz" | \
     tar xvz --directory=app/bin
