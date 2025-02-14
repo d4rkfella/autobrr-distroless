@@ -1,4 +1,4 @@
-FROM FROM docker.io/library/alpine:3.21 AS build
+FROM docker.io/library/alpine:3.21 AS build
 
 ARG VERSION=v1.58.0
 
