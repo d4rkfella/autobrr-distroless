@@ -14,7 +14,7 @@ RUN apk add --no-cache \
         gpg-agent \
         gnupg-dirmngr && \
     mkdir -p app/bin usr/bin etc && \
-    echo 'autobrr:x:65532:65532::/nonexistent:/sbin/nologin' > etc/passwd \ && \
+    echo 'autobrr:x:65532:65532::/nonexistent:/sbin/nologin' > etc/passwd && \
     echo 'autobrr:x:65532:' > etc/group && \
     curl -fsSLO --output-dir /tmp "https://github.com/openSUSE/catatonit/releases/download/${CATATONIT_VERSION}/catatonit.x86_64{,.asc}" && \
     gpg --keyserver keyserver.ubuntu.com --recv-keys 5F36C6C61B5460124A75F5A69E18AA267DDB8DB4 && \
