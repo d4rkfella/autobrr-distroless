@@ -1,17 +1,21 @@
-FROM docker.io/library/alpine:3.21 AS build
+FROM cgr.dev/chainguard/wolfi-base:latest@sha256:95be65e511213e5adfae48f3dc55f97f5578b6facbbe2e6d53ea1b153ba6a15b AS build
 
-ARG VERSION=v1.58.0
+# renovate: datasource=github-releases depName=autobrr/autobrr
+ARG AUTOBRR_VERSION=v1.58.0
+# renovate: datasource=github-releases depName=openSUSE/catatonit
+ARG CATATONIT_VERSION=v0.2.1
 
-WORKDIR /workdir
+WORKDIR /rootfs
 
 RUN apk add --no-cache \
-        ca-certificates-bundle \
-        catatonit \
         tzdata \
-    && mkdir -p app/bin \
-    && wget -qO- "https://github.com/autobrr/autobrr/releases/download/${VERSION}/autobrr_${VERSION#v}_linux_x86_64.tar.gz" | \
-    tar xvz --directory=app/bin
-
+        curl && \
+    mkdir -p app/bin usr/bin etc && \
+    echo 'autobrr:x:65532:65532::/nonexistent:/sbin/nologin' > etc/passwd \ && \
+    echo 'autobrr:x:65532:' > etc/group && \
+    curl -fsSL -o usr/bin/catatonit "https://github.com/openSUSE/catatonit/releases/download/${CATATONIT_VERSION}/catatonit.x86_64" && \
+    curl -fsSL "https://github.com/autobrr/autobrr/releases/download/${AUTOBRR_VERSION}/autobrr_${AUTOBRR_VERSION#v}_linux_x86_64.tar.gz" | \
+    tar xvz --exclude='LICENSE' --exclude='README.md' --directory=app/bin
 
 FROM scratch
 
@@ -23,13 +27,16 @@ WORKDIR /app
 
 VOLUME /config
 
-COPY --from=build /workdir/app/bin/autobrr /workdir/app/bin/autobrrctl /app/bin/
-COPY --from=build /usr/bin/catatonit /usr/bin/catatonit
+COPY --from=build --chmod=755 /rootfs /
 COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 COPY --from=build /usr/share/zoneinfo /usr/share/zoneinfo
 
+USER autobrr:autobrr
+
+VOLUME /config
 EXPOSE 7474
 
-ENTRYPOINT ["/usr/bin/catatonit", "--", "/app/bin/autobrr", "--config", "/config"]
+ENTRYPOINT ["catatonit", "--", "/app/bin/autobrr"]
+CMD ["--config", "/config"]
 
 LABEL org.opencontainers.image.source="https://github.com/autobrr/autobrr"
