@@ -34,7 +34,7 @@ WORKDIR /app
 
 VOLUME /config
 
-COPY --from=build --chmod=755 /rootfs /
+COPY --from=build /rootfs /
 COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 COPY --from=build /usr/share/zoneinfo /usr/share/zoneinfo
 
