@@ -1,4 +1,4 @@
-FROM cgr.dev/chainguard/wolfi-base:latest@sha256:78adc0075d239ee722b5d6ba0ca23e1cd40a30f23aac2e38d48f61a014151277 AS build
+FROM cgr.dev/chainguard/wolfi-base:latest@sha256:2903fde551f9cd973aa7511653ff82f60dceedd4d56e4c2e1af390c4dfb939d0 AS build
 
 # renovate: datasource=github-releases depName=autobrr/autobrr
 ARG AUTOBRR_VERSION=v1.59.0
