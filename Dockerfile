@@ -1,7 +1,7 @@
 FROM cgr.dev/chainguard/wolfi-base:latest@sha256:fb9a7aedf73e6eb6c74206e61bcf60298436f4f7ab263d9cf61795097437221f AS build
 
 # renovate: datasource=github-releases depName=autobrr/autobrr
-ARG AUTOBRR_VERSION=v1.59.0
+ARG AUTOBRR_VERSION=v1.60.0
 # renovate: datasource=github-releases depName=openSUSE/catatonit
 ARG CATATONIT_VERSION=v0.2.1
 
