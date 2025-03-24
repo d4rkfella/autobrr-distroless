@@ -38,7 +38,7 @@ jobs:
           LATEST_VERSION=$(
               aws s3api list-objects-v2 \
               --bucket "$BUCKET" \
-              --endpoint-url "$R2_ENDPOINT_URL" \
+              --endpoint-url "$AWS_ENDPOINT_URL" \
               --query "Contents[?contains(Key, '$PACKAGE-')].Key" \
               --output text | \
               grep -Eo "$PACKAGE-[0-9]+\.[0-9]+\.[0-9]+" | \
